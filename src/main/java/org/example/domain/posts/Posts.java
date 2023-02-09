@@ -3,6 +3,7 @@ package org.example.domain.posts;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.domain.BaseTimeEntity;
 
 import javax.persistence.*;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor  // 기본 생성자 생성
 @Entity     // 테이블과 링크될 클래스임을 선언
-public class Posts {
+public class Posts extends BaseTimeEntity {
     @Id     // JPA PK
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
