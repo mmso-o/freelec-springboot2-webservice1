@@ -1,21 +1,30 @@
 package org.example.web;
 
 import lombok.RequiredArgsConstructor;
+import org.example.config.auth.dto.SessionUser;
 import org.example.service.posts.PostsService;
 import org.example.web.dto.PostsResponseDto;
-import org.h2.engine.Mode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpSession;
+
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
     private final PostsService postsService;
+    private final HttpSession httpSession;
     @GetMapping("/")
     public String index(Model model){
         model.addAttribute("posts", postsService.findAllDesc()); // 서버 템플릿 엔진에서 사용할 수 있는 객체를 posts로 저장하여 index.mustache 에 전달한다.
+
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+
+        if (user != null) {
+            model.addAttribute("userName", user.getName());
+        }
 
         /*
         mustache starter 덕분에 컨트롤러에서 문자열을 반환할 때 앞의 경로와 뒤의 파일 확장자는 자동으로 지정됨.
