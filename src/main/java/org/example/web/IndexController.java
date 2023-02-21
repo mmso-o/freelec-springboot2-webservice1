@@ -1,6 +1,7 @@
 package org.example.web;
 
 import lombok.RequiredArgsConstructor;
+import org.example.config.auth.LoginUser;
 import org.example.config.auth.dto.SessionUser;
 import org.example.service.posts.PostsService;
 import org.example.web.dto.PostsResponseDto;
@@ -17,10 +18,8 @@ public class IndexController {
     private final PostsService postsService;
     private final HttpSession httpSession;
     @GetMapping("/")
-    public String index(Model model){
+    public String index(Model model, @LoginUser SessionUser user){  // @LoginUser 어노테이션으로 어느 컨트롤러든지 세션 정보를 가져올 수 있다.
         model.addAttribute("posts", postsService.findAllDesc()); // 서버 템플릿 엔진에서 사용할 수 있는 객체를 posts로 저장하여 index.mustache 에 전달한다.
-
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
         if (user != null) {
             model.addAttribute("userName", user.getName());
